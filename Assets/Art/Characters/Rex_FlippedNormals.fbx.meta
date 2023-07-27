@@ -1,21 +1,30 @@
 fileFormatVersion: 2
-guid: 1142fc21f15c5d74da3bf7d7b9b844f2
+guid: ebd7ade2a1b97a44bb3f538f73abe498
 ModelImporter:
   serializedVersion: 21300
-  internalIDToNameTable: []
-  externalObjects:
+  internalIDToNameTable:
   - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ground
-    second: {fileID: 6795462705980167066, guid: 9d61a109f6cba4d418fe40dabd7b2399,
-      type: 3}
+      74: -3271748955755807069
+    second: metarig|Empty.002Action
   - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Leaf
-    second: {fileID: -8751555780163154282, guid: 87bf626958750904bba924a6f8bc2a4d,
-      type: 3}
+      74: -4946623131054519084
+    second: metarig|EmptyAction
+  - first:
+      74: -4664832392316793796
+    second: metarig|IdleAnim
+  - first:
+      74: 945745392681837475
+    second: metarig|IdleAnimUp
+  - first:
+      74: 7469755740291109609
+    second: metarig|Light.001Action
+  - first:
+      74: -3270761088705692214
+    second: metarig|Light.001Action.001
+  - first:
+      74: 3525723067814839291
+    second: metarig|LightAction
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
