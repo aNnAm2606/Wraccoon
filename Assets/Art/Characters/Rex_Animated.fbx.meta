@@ -1,29 +1,23 @@
 fileFormatVersion: 2
-guid: ebd7ade2a1b97a44bb3f538f73abe498
+guid: cb5dfaf032bfee941a644f226ec314a9
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
-      74: -3271748955755807069
-    second: metarig|Empty.002Action
-  - first:
-      74: -4946623131054519084
-    second: metarig|EmptyAction
+      74: -7135580977392344565
+    second: metarig|GetDown
   - first:
       74: -4664832392316793796
     second: metarig|IdleAnim
   - first:
-      74: 945745392681837475
-    second: metarig|IdleAnimUp
+      74: 3819204733282340162
+    second: metarig|Jump
   - first:
-      74: 7469755740291109609
-    second: metarig|Light.001Action
+      74: -2545509720817526029
+    second: metarig|StandingIdle
   - first:
-      74: -3270761088705692214
-    second: metarig|Light.001Action.001
-  - first:
-      74: 3525723067814839291
-    second: metarig|LightAction
+      74: 2933577835342229695
+    second: metarig|Walk
   externalObjects: {}
   materials:
     materialImportMode: 2
