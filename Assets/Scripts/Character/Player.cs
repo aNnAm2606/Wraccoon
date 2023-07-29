@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] public float speed = 7f;
+    [SerializeField] public float jumpSpeed = 5f;
 
     private bool isWalking;
     private bool isJumping;
@@ -14,8 +15,7 @@ public class Player : MonoBehaviour
     Vector3 turnVelocity;
 
     
-    public float rotationSpeed = 90f;
-    private float jumpSpeed = 10f;
+    public float rotationSpeed = 100f;
     private float gravityValue = -9.81f;
 
     CharacterController characterController;
