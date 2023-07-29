@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
         
         if (characterController.isGrounded) 
         {
