@@ -2,17 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
-    private CharacterController controller;
-    private float speed = 6f;
+
+    Vector3 movementVelocity;
+    Vector3 turnVelocity;
+
+    public float speed = 6f;
+    public float rotationSpeed = 90f;
+    private float jumpSpeed = 10f;
+    private float gravityValue = -9.81f;
+
+    CharacterController characterController;
+
+    void Awake()
+    {
+        characterController = GetComponent<CharacterController>();
+    }
 
     void Update()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        float jump = Input.GetAxisRaw("Jump");
-        Vector3 Direction = new Vector3 (horizontal, jump, vertical);
+        
+        if (characterController.isGrounded) 
+        {
+            movementVelocity = transform.forward * speed * vertical;
+            turnVelocity = transform.up * rotationSpeed * horizontal;
+
+            if(Input.GetButtonDown("Jump"))
+            {
+                movementVelocity.y = jumpSpeed;
+            }
+        }
+
+        //Add gravity
+        movementVelocity.y += gravityValue * Time.deltaTime;
+        characterController.Move(movementVelocity*Time.deltaTime);
+        transform.Rotate(turnVelocity * Time.deltaTime);
     }
 
     //private CharacterController controller;
