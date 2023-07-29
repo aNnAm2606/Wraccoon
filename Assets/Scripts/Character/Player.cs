@@ -5,11 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+    [SerializeField] public float speed = 7f;
+
+    private bool isWalking;
+    private bool isJumping;
 
     Vector3 movementVelocity;
     Vector3 turnVelocity;
 
-    public float speed = 6f;
+    
     public float rotationSpeed = 90f;
     private float jumpSpeed = 10f;
     private float gravityValue = -9.81f;
@@ -23,6 +27,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        isJumping = false;
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
@@ -32,9 +37,10 @@ public class Player : MonoBehaviour
             movementVelocity = transform.forward * speed * vertical;
             turnVelocity = transform.up * rotationSpeed * horizontal;
 
-            if(Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump"))
             {
                 movementVelocity.y = jumpSpeed;
+                isJumping = true;
             }
         }
 
@@ -42,45 +48,20 @@ public class Player : MonoBehaviour
         movementVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(movementVelocity*Time.deltaTime);
         transform.Rotate(turnVelocity * Time.deltaTime);
+
+ 
+        isWalking = direction != Vector3.zero;
+     
+
     }
 
-    //private CharacterController controller;
-    //private Vector3 playerVelocity;
-    //private bool groundedPlayer;
-    //private float playerSpeed = 2.0f;
-    //private float jumpHeight = 1.0f;
-    //private float gravityValue = -9.81f;
+    public bool IsWalking()
+    {
+        return isWalking;
+    }
 
-    //private void Start()
-    //{
-    //    controller = gameObject.AddComponent<CharacterController>();
-    //    controller.center = new Vector3(0, 1, 0);
-    //}
-
-    //void Update()
-    //{
-    //    groundedPlayer = controller.isGrounded;
-    //    if (groundedPlayer && playerVelocity.y < 0)
-    //    {
-    //        playerVelocity.y = 0f;
-    //    }
-
-    //    Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-    //    controller.Move(move * Time.deltaTime * playerSpeed);
-
-    //    if (move != Vector3.zero)
-    //    {
-    //        //gameObject.transform.forward = move;
-    //        gameObject.transform.localPosition = move;
-    //    }
-
-    //    // Changes the height position of the player..
-    //    if (Input.GetButtonDown("Jump") && groundedPlayer)
-    //    {
-    //        playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-    //    }
-
-    //    playerVelocity.y += gravityValue * Time.deltaTime;
-    //    controller.Move(playerVelocity * Time.deltaTime);
-    //}
+    public bool IsJumping()
+    {
+        return isJumping;
+    }
 }
