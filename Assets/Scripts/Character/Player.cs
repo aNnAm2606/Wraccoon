@@ -6,7 +6,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] public float speed = 7f;
-    [SerializeField] public float jumpSpeed = 5f;
+    [SerializeField] public float jumpSpeed = 7f;
+    [SerializeField] private GameInput gameInput;
 
     private bool isWalking;
     private bool isJumping;
@@ -28,16 +29,16 @@ public class Player : MonoBehaviour
     void Update()
     {
         isJumping = false;
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+
+        Vector3 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector3 direction = new Vector3(inputVector.x, inputVector.y, inputVector.z).normalized;
         
         if (characterController.isGrounded) 
         {
-            movementVelocity = transform.forward * speed * vertical;
-            turnVelocity = transform.up * rotationSpeed * horizontal;
+            movementVelocity = transform.forward * speed * inputVector.z;
+            turnVelocity = transform.up * rotationSpeed * inputVector.x;
 
-            if (Input.GetButtonDown("Jump"))
+            if (inputVector.y != 0)
             {
                 movementVelocity.y = jumpSpeed;
                 isJumping = true;
@@ -49,10 +50,8 @@ public class Player : MonoBehaviour
         characterController.Move(movementVelocity*Time.deltaTime);
         transform.Rotate(turnVelocity * Time.deltaTime);
 
- 
         isWalking = direction != Vector3.zero;
      
-
     }
 
     public bool IsWalking()
