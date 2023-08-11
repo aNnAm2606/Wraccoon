@@ -22,6 +22,39 @@ public class Player : MonoBehaviour
 
     CharacterController characterController;
 
+    private void Start()
+    {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
+    }
+
+    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+    {
+        Vector3 inputVector = gameInput.GetMovementVectorNormalized();
+
+        Vector3 direction = new Vector3(inputVector.x, inputVector.y, inputVector.z).normalized;
+
+        float interactDistance = 1.2f;
+
+        if (direction != Vector3.zero)
+        {
+            lastInteractDirection = direction;
+        }
+
+        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, Mathf.Infinity, objectsLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out Sofa sofa))
+            {
+                //has sofa
+                sofa.Interact();
+            }
+            if (raycastHit.transform.TryGetComponent(out MashmallowJar jar))
+            {
+                //has jar
+                jar.Interact();
+            }
+        }
+    }
+
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -49,7 +82,7 @@ public class Player : MonoBehaviour
 
         Vector3 direction = new Vector3(inputVector.x, inputVector.y, inputVector.z).normalized;
 
-        float interactDistance = 2f;
+        float interactDistance = 3f;
 
         if(direction != Vector3.zero)
         {
@@ -61,7 +94,12 @@ public class Player : MonoBehaviour
           if(raycastHit.transform.TryGetComponent(out Sofa sofa))
             {
                 //has sofa
-                sofa.Interact();
+                //sofa.Interact();
+            }
+            if (raycastHit.transform.TryGetComponent(out MashmallowJar jar))
+            {
+                //has jar
+                //jar.Interact();
             }
         }
     }
