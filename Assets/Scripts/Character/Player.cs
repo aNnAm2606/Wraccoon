@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,18 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+
+    public static Player Instance
+    {
+        get; private set;
+    }
+
+    public event EventHandler<OnSelectedJarChangedEventArgs> OnSelectedJarChanged;
+    public class OnSelectedJarChangedEventArgs : EventArgs
+    {
+        public MashmallowJar selectedJar;
+    }
+
     [SerializeField] public float speed = 7f;
     [SerializeField] public float jumpSpeed = 7f;
     [SerializeField] private GameInput gameInput;
@@ -15,7 +28,8 @@ public class Player : MonoBehaviour
 
     Vector3 movementVelocity;
     Vector3 turnVelocity;
-    private Vector3 lastInteractDirection; 
+    private Vector3 lastInteractDirection;
+    private MashmallowJar selectedJar;
 
     public float rotationSpeed = 100f;
     private float gravityValue = -9.81f;
@@ -29,35 +43,20 @@ public class Player : MonoBehaviour
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
     {
-        Vector3 inputVector = gameInput.GetMovementVectorNormalized();
-
-        Vector3 direction = new Vector3(inputVector.x, inputVector.y, inputVector.z).normalized;
-
-        float interactDistance = 1.2f;
-
-        if (direction != Vector3.zero)
+        if(selectedJar != null)
         {
-            lastInteractDirection = direction;
-        }
-
-        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, Mathf.Infinity, objectsLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out Sofa sofa))
-            {
-                //has sofa
-                sofa.Interact();
-            }
-            if (raycastHit.transform.TryGetComponent(out MashmallowJar jar))
-            {
-                //has jar
-                jar.Interact();
-            }
+            selectedJar.Interact();
         }
     }
 
-    void Awake()
+    private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        if (Instance != null)
+        {
+            Debug.LogError("There is more than one player Instance");
+        }
+        Instance = this;
     }
 
     void Update()
@@ -99,9 +98,21 @@ public class Player : MonoBehaviour
             if (raycastHit.transform.TryGetComponent(out MashmallowJar jar))
             {
                 //has jar
-                //jar.Interact();
+                if (jar != selectedJar)
+                {
+                    SetSelectedJar(jar);
+                }
+            }
+            else
+            {
+                SetSelectedJar(null);
             }
         }
+        else
+        {
+            SetSelectedJar(null);
+        }
+
     }
 
     private void HandleMovement()
@@ -130,5 +141,15 @@ public class Player : MonoBehaviour
 
         isWalking = direction != Vector3.zero;
 
+    }
+
+    private void SetSelectedJar(MashmallowJar selectedJar)
+    {
+        this.selectedJar = selectedJar;
+
+        OnSelectedJarChanged?.Invoke(this, new OnSelectedJarChangedEventArgs
+        {
+            selectedJar = selectedJar
+        });
     }
 }
